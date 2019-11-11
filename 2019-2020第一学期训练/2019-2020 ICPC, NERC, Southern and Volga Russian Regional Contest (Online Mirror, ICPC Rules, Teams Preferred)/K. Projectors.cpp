@@ -1,3 +1,18 @@
+/*
+first we should do the discretization
+then for each time we define X was the number of lectures that include this time
+Y was that number of seminar
+if one time have X>x or X+Y>x+y then we can puts -1;
+
+then we build a graph:
+for each seminar we add the edge from l to r with 1 flow
+and add the edge from i to i+1 with min(y,x+y-X-Y) flows;
+
+then we do dinic on the graph
+if the maxflow >= k ,we have one answer
+for each seminar,if its edge have flow it use HD
+else it use ordinary
+*/
 #include<bits/stdc++.h>
 using namespace std;
 #define maxn 300
@@ -11,7 +26,7 @@ struct Edge{
 int w[maxn*5],si,num[maxn*5],num1[maxn*5],fi[maxn*5],se;
 inline void add_edge(int u,int v,int fl){edge[++se].next=fi[u],fi[u]=se,edge[se].to=v,edge[se].fl=fl;}
 inline void add(int u,int v,int fl){add_edge(u,v,fl),add_edge(v,u,0);}
-void read(){
+void read(){//read and discretization 
 	scanf("%d%d%d%d",&n,&m,&x,&y);
 	memset(num,0,sizeof(num)),memset(num1,0,sizeof(num1));
 	num[0]=x,num1[0]=y;si=0;
@@ -26,7 +41,7 @@ void read(){
 		num1[b[i].l]--,num1[b[i].r]++;
 	}
 }
-int build(){
+int build(){//build the graph
 	memset(fi,0,sizeof(fi)),se=1;
 	for(int i=0;i<m;i++)add(b[i].l,b[i].r,1);
 	for(int i=1;i<=si;i++){
