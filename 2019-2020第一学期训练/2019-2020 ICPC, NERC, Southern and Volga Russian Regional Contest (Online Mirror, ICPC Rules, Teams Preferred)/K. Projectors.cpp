@@ -71,7 +71,8 @@ int dfs(int x,int w){
 		int v=edge[i].to;
 		if(dis[v]!=dis[x]+1||!edge[i].fl)continue;
 		w1=dfs(v,min(w,edge[i].fl));
-		edge[i].fl-=w1,edge[i^1].fl+=w1,flow+=w1;
+		edge[i].fl-=w1,edge[i^1].fl+=w1,flow+=w1,w-=w1;
+		if(!w)break;
 	}
 	return flow;
 }
