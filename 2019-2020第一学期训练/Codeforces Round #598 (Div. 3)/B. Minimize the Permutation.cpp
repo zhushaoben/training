@@ -5,7 +5,7 @@ int a[maxn+5],b[maxn+5],x,n;
 void work(int l){
 	x++;if(l>=n||x>=n)return;
 	while(b[x]<l)x++;
-	for(int i=b[x]-1;i>=l;i--)swap(a[i],a[i+1]);
+	for(int i=b[x]-1;i>=l;i--)b[a[i]]++,swap(a[i],a[i+1]);
 	work(b[x]+(b[x]==l));
 }
 void work(){
