@@ -1,20 +1,22 @@
 /*
-first we have a guess,we ergodic each node 
-if its number of edges less than remain nodes 
-then it can be connected with at least one nodes remain,we will add ans on that node
-else ans++
-then we delete all its edges
+for this problem we should find the minimum spanning tree for the given graph
 
-but the thinking have one leak,a node may not connected with all the node
-after delete some nodes,we think it was connected with all the node,
-(it can be connected by some 0 weight edges to those nodes it have 1 weight edge connected with)
-then the answer will be larger
+we define d[v] indicates the number of edges connecting v weighted 1
 
-so each time er take the node who have the most edges present
-then we do the steps writed above
-think that if a node connect with all nodes after we delete the present node
-and it can be connected by some 0 weight edges through present edge
-then that the number of its edges must more than the present's
+first we have a speculation that  we iterate over all vertices v from 1 to n
+if d[v] less than the number of remain nodes 
+then it can be connected with at least one nodes by edges weight 0,
+we can delete this node and all edges connecting it
+
+else ans++ ,we delete it and all its edges
+
+but the thinking have one leak,
+when we delete the node v,there may be a node u that d[u]=the number of remain nodes
+but if we delete u earlier,the answer will be less
+
+so each time we delete the node whose d[] is the biggest
+then the situation will only appear when d[v]=the number of remain nodes-1;
+for tis situation the answer is right
 */
 #include<bits/stdc++.h>
 using namespace std;
