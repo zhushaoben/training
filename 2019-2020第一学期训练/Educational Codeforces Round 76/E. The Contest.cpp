@@ -34,7 +34,7 @@ int main(){
 	for(int i=1;i<=n;i++)a[i]+=a[i-1];
 	build(1,n,1);int ans=k1+mi[1];
 	for(int i=1;i<n;i++){
-		if(b[i]!=b[i-1])mi[1]--;
+		if(b[i]!=b[i-1])L=i+1,modify(1,n,1);
 //		else if(a[i]!=a[i-1])L=i,modify1(1,n,1);
 		ans=min(ans,i-a[i]+k1-a[i]+mi[1]);
 	}
