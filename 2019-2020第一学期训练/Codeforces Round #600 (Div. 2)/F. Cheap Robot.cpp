@@ -1,3 +1,15 @@
+/*
+we define d[u] as the minimum distant between u and centrals,we can do a multi-source dijkstra calulate d[u]
+Key insight : Since we always start from a central, from any node u, 
+going to the nearest central, then going back to u can't decrease the number of energy points in the battery.
+Key insight : the energy that for the robot at u must <= c-d[u]
+so if the robot at node u with energy >= d[u],then its energy can be regarded as c-d[u]
+we admit the robot go to node u if c>=2*d[u],the robot go through edge(u,v,w) if c-d[u]-w>=d[v]
+
+Hence,we can change the edge(u,v,w) to edge(u,v,w+d[u]+d[v])
+then we can make a minimum spanning tree for this new graph
+the answer for (u,v) is the maximum weight in the path from u to v
+*/ 
 #include<bits/stdc++.h>
 using namespace std;
 #define maxn 100000
