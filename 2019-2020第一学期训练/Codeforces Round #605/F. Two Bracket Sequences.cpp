@@ -1,35 +1,39 @@
+/*
+let f[i][j][k] be the shortest length of sequences that contain the first i characters of s and the first j characters of t
+and the difference of '(' and ')' is k
+*/ 
 #include<bits/stdc++.h>
 using namespace std;
 #define maxn 205
-char s[maxn],t[maxn],ans[maxn*2];
-int f[maxn][maxn],pre[maxn][maxn];
+#define inf 0x1f1f1f1f
+char s[maxn],t[maxn],ans1[maxn*2];
+int f[maxn][maxn][maxn],pre[maxn][maxn][maxn];
 int main(){
 	scanf("%s%s",s,t);
-	int n=strlen(s),m=strlen(t);
+	int n=strlen(s),m=strlen(t),q=max(n,m);
 	memset(f,0x1f,sizeof(f));
-	f[0][0]=-1;
+	f[0][0][0]=0;
 	for(int i=0;i<=n;i++){
 		for(int j=0;j<=m;j++){
-			if(s[i]&&t[j]&&s[i]==t[j]){
-				if(f[i][j]+1<f[i+1][j+1])f[i+1][j+1]=f[i][j]+1,pre[i+1][j+1]=i*1000+j;
+			for(int k=0;k<=q;k++){
+				int w=(s[i]=='('),w1=t[j]=='(',w2=s[i]==')',w3=t[j]==')';
+				if(f[i+w][j+w1][k+1]>f[i][j][k]+1)f[i+w][j+w1][k+1]=f[i][j][k]+1,pre[i+w][j+w1][k+1]=i*maxn+j+k*maxn*maxn;
+				if(k&&f[i+w2][j+w3][k-1]>f[i][j][k]+1)f[i+w2][j+w3][k-1]=f[i][j][k]+1,pre[i+w2][j+w3][k-1]=i*maxn+j+k*maxn*maxn;	
 			}
-			if(s[i]&&f[i][j]+1<f[i+1][j])f[i+1][j]=f[i][j]+1,pre[i+1][j]=i*1000+j;
-			if(t[j]&&f[i][j]+1<f[i][j+1])f[i][j+1]=f[i][j]+1,pre[i][j+1]=i*1000+j;
+			for(int k=q;~k;k--){
+				int w=(s[i]=='('),w1=t[j]=='(',w2=s[i]==')',w3=t[j]==')';
+				if(f[i+w][j+w1][k+1]>f[i][j][k]+1)f[i+w][j+w1][k+1]=f[i][j][k]+1,pre[i+w][j+w1][k+1]=i*maxn+j+k*maxn*maxn;
+				if(k&&f[i+w2][j+w3][k-1]>f[i][j][k]+1)f[i+w2][j+w3][k-1]=f[i][j][k]+1,pre[i+w2][j+w3][k-1]=i*maxn+j+k*maxn*maxn;	
+			}
 		}
 	}
-	int i=n,j=m,x,y,mi=maxn*3,sum=0;
-	while(i||j){
-		x=pre[i][j]/1000,y=pre[i][j]%1000;
-		if(x==i-1)ans[f[i][j]]=s[i-1];
-		else ans[f[i][j]]=t[j-1];
-		i=x,j=y;
+	int k=0,i=n,j=m,x,y,z,w=f[n][m][0];
+	while(i||j||k){
+		x=(pre[i][j][k]/maxn)%maxn,y=pre[i][j][k]%maxn,z=pre[i][j][k]/maxn/maxn;
+		if(z==k+1)ans1[--w]=')';
+		else ans1[--w]='(';
+		i=x,j=y,k=z;
 	}
-	for(i=0;i<=f[n][m];i++){
-		if(ans[i]=='(')sum++;
-		else sum--;
-		mi=min(mi,sum);
-	}
-	for(int i=0;i<mi;i++)putchar('(');printf("%s",ans);
-	for(int i=0;i<sum+mi;i++)putchar(')');
+	puts(ans1);
 	return 0;
 }
