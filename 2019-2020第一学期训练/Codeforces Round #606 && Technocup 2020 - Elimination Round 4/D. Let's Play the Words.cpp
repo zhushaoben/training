@@ -11,9 +11,9 @@ int work(){
 	for(int i=0;i<n;i++)vis[i]=0;
 	for(int i=0;i<n;i++){
 		scanf("%s",s);
-		S=l=0;while(s[l])S=S*3+s[l]-'0'+1,l++;
+		S=l=0;while(s[l])S=S*2+s[l]-'0'+1,l++;
 		mp[S]=i+1;S=0;
-		for(int i=l-1;~i;i--)S=S*3+s[i]-'0'+1;
+		for(int i=l-1;~i;i--)S=S*2+s[i]-'0'+1;
 		w=s[0]=='1',w1=s[l-1]=='1';
 		if(mp[S]){
 			vis[i+1]=1,vis[mp[S]]=1;
