@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable CheatEngineTableVersion="21">
+  <CheatEntries>
+    <CheatEntry>
+      <ID>0</ID>
+      <Description>"Free boosters"</Description>
+      <LastState/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>[Enable]
+Asphalt8.exe+9BAA6E:
+add dword ptr [esi+0000033C], 0
+
+[Disable]
+Asphalt8.exe+9BAA6E:
+add dword ptr [esi+0000033C], -10
+
+</AssemblerScript>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>1</ID>
+      <Description>"Stop time attack"</Description>
+      <LastState/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>[ENABLE]
+//code from here to '[DISABLE]' will be used to enable the cheat
+Asphalt8.exe+2643DE:
+nop
+nop
+nop
+
+ 
+[DISABLE]
+//code from here till the end of the code will be used to disable the cheat
+Asphalt8.exe+2643DE:
+add ecx,[ebp+08]
+
+</AssemblerScript>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>2</ID>
+      <Description>"Stunt hack"</Description>
+      <LastState/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>[ENABLE]
+//code from here to '[DISABLE]' will be used to enable the cheat
+Asphalt8.exe+A8B2D2:
+nop
+nop
+
+Asphalt8.exe+A8D903:
+nop
+nop
+
+[DISABLE]
+//code from here till the end of the code will be used to disable the cheat
+Asphalt8.exe+A8B2D2:
+test al,al
+
+
+Asphalt8.exe+A8D903:
+jne Asphalt8.exe+A8D908
+
+</AssemblerScript>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>3</ID>
+      <Description>"Safe crash"</Description>
+      <LastState/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>[ENABLE]
+//code from here to '[DISABLE]' will be used to enable the cheat
+Asphalt8.exe+A9DA9E:
+jne Asphalt8.exe+A9DAAC
+
+ 
+ 
+[DISABLE]
+//code from here till the end of the code will be used to disable the cheat
+Asphalt8.exe+A9DA9E:
+je Asphalt8.exe+A9DAAC
+
+</AssemblerScript>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>4</ID>
+      <Description>"Perfect Nitro"</Description>
+      <LastState/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>[ENABLE]
+//code from here to '[DISABLE]' will be used to enable the cheat
+Asphalt8.exe+AD7498:
+nop
+nop
+
+ 
+ 
+[DISABLE]
+//code from here till the end of the code will be used to disable the cheat
+Asphalt8.exe+AD7498:
+jna Asphalt8.exe+AD74AF
+
+</AssemblerScript>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>5</ID>
+      <Description>"Nitro ratio"</Description>
+      <LastState/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>{ Game   : Asphalt8.exe
+  Version: 
+  Date   : 2017-12-15
+  Author : aabbc
+
+  This script does Nitro ratio hack
+}
+
+define(address,"Asphalt8.exe"+AD7CE6)
+define(bytes,0F 28 CC F3 0F 11 65 F8 F3 0F 59 CA)
+
+define(address1,"Asphalt8.exe"+AD7F3C)
+define(bytes1,0F 28 CC F3 0F 11 65 E8 F3 0F 59 CA)
+
+[ENABLE]
+
+
+assert(address,bytes)
+assert(address1, bytes1)
+alloc(newmem,$1000)
+
+label(code)
+label(code1)
+label(return)
+label(return1)
+
+newmem:
+
+code:
+push eax
+mov eax,40555555 // float 3.3333 = value 10,
+movd xmm4,eax
+movaps xmm1,xmm4
+movss [ebp-08],xmm4
+mulss xmm1,xmm2
+pop eax
+ret
+
+code1:
+push eax
+mov eax,40555555 // float 3.3333 = value 10,
+movd xmm4,eax
+movaps xmm1,xmm4
+movss [ebp-18],xmm4
+mulss xmm1,xmm2
+pop eax
+ret
+
+address:
+  push ebx
+  mov ebx, code
+  call ebx
+  pop ebx
+  nop
+  nop
+  nop
+return:
+
+address1:
+  push ebx
+  mov ebx, code1
+  call ebx
+  pop ebx
+  nop
+  nop
+  nop
+return1:
+
+[DISABLE]
+
+address:
+  db bytes
+  // movaps xmm1,xmm4
+  // movss [ebp-08],xmm4
+  // mulss xmm1, xmm2
+
+address1:
+  db bytes1
+  // movaps xmm1,xmm4
+  // movss [ebp-18],xmm4
+  // mulss xmm1,xmm2
+
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: "Asphalt8.exe"+AD7CE6
+
+"Asphalt8.exe"+AD7CC7: 8B 0D 4C E7 91 02           -  mov ecx,[Asphalt8.exe+1A4E74C]
+"Asphalt8.exe"+AD7CCD: 33 C1                       -  xor eax,ecx
+"Asphalt8.exe"+AD7CCF: 33 C2                       -  xor eax,edx
+"Asphalt8.exe"+AD7CD1: 89 45 FC                    -  mov [ebp-04],eax
+"Asphalt8.exe"+AD7CD4: 66 0F 5A E0                 -  cvtpd2ps xmm4,xmm0
+"Asphalt8.exe"+AD7CD8: 8B 03                       -  mov eax,[ebx]
+"Asphalt8.exe"+AD7CDA: 33 C1                       -  xor eax,ecx
+"Asphalt8.exe"+AD7CDC: 33 C3                       -  xor eax,ebx
+"Asphalt8.exe"+AD7CDE: 89 45 F4                    -  mov [ebp-0C],eax
+"Asphalt8.exe"+AD7CE1: F3 0F 10 45 F4              -  movss xmm0,[ebp-0C]
+// ---------- INJECTING HERE ----------
+"Asphalt8.exe"+AD7CE6: 0F 28 CC                    -  movaps xmm1,xmm4
+"Asphalt8.exe"+AD7CE9: F3 0F 11 65 F8              -  movss [ebp-08],xmm4
+"Asphalt8.exe"+AD7CEE: F3 0F 59 CA                 -  mulss xmm1,xmm2
+// ---------- DONE INJECTING  ----------
+"Asphalt8.exe"+AD7CF2: F3 0F 5E 0D D4 F1 59 02     -  divss xmm1,[Asphalt8.exe+16CF1D4]
+"Asphalt8.exe"+AD7CFA: F3 0F 5C C1                 -  subss xmm0,xmm1
+"Asphalt8.exe"+AD7CFE: F3 0F 11 4D F0              -  movss [ebp-10],xmm1
+"Asphalt8.exe"+AD7D03: F3 0F 11 45 F4              -  movss [ebp-0C],xmm0
+"Asphalt8.exe"+AD7D08: 33 4D F4                    -  xor ecx,[ebp-0C]
+"Asphalt8.exe"+AD7D0B: 33 CB                       -  xor ecx,ebx
+"Asphalt8.exe"+AD7D0D: 89 0B                       -  mov [ebx],ecx
+"Asphalt8.exe"+AD7D0F: 8B C1                       -  mov eax,ecx
+"Asphalt8.exe"+AD7D11: 8B 15 4C E7 91 02           -  mov edx,[Asphalt8.exe+1A4E74C]
+}
+
+{
+// ORIGINAL CODE - INJECTION POINT: "Asphalt8.exe"+AD7F3C
+
+"Asphalt8.exe"+AD7F1D: 33 C1                       -  xor eax,ecx
+"Asphalt8.exe"+AD7F1F: 8B 0D 4C E7 91 02           -  mov ecx,[Asphalt8.exe+1A4E74C]
+"Asphalt8.exe"+AD7F25: 33 C1                       -  xor eax,ecx
+"Asphalt8.exe"+AD7F27: 89 45 F4                    -  mov [ebp-0C],eax
+"Asphalt8.exe"+AD7F2A: 66 0F 5A E0                 -  cvtpd2ps xmm4,xmm0
+"Asphalt8.exe"+AD7F2E: 8B 03                       -  mov eax,[ebx]
+"Asphalt8.exe"+AD7F30: 33 C3                       -  xor eax,ebx
+"Asphalt8.exe"+AD7F32: 33 C1                       -  xor eax,ecx
+"Asphalt8.exe"+AD7F34: 89 45 FC                    -  mov [ebp-04],eax
+"Asphalt8.exe"+AD7F37: F3 0F 10 45 FC              -  movss xmm0,[ebp-04]
+// ---------- INJECTING HERE ----------
+"Asphalt8.exe"+AD7F3C: 0F 28 CC                    -  movaps xmm1,xmm4
+"Asphalt8.exe"+AD7F3F: F3 0F 11 65 E8              -  movss [ebp-18],xmm4
+"Asphalt8.exe"+AD7F44: F3 0F 59 CA                 -  mulss xmm1,xmm2
+// ---------- DONE INJECTING  ----------
+"Asphalt8.exe"+AD7F48: F3 0F 5E 0D D4 F1 59 02     -  divss xmm1,[Asphalt8.exe+16CF1D4]
+"Asphalt8.exe"+AD7F50: F3 0F 5C C1                 -  subss xmm0,xmm1
+"Asphalt8.exe"+AD7F54: F3 0F 11 4D F0              -  movss [ebp-10],xmm1
+"Asphalt8.exe"+AD7F59: F3 0F 11 45 FC              -  movss [ebp-04],xmm0
+"Asphalt8.exe"+AD7F5E: 8B 45 FC                    -  mov eax,[ebp-04]
+"Asphalt8.exe"+AD7F61: 33 C3                       -  xor eax,ebx
+"Asphalt8.exe"+AD7F63: 33 C1                       -  xor eax,ecx
+"Asphalt8.exe"+AD7F65: 89 03                       -  mov [ebx],eax
+"Asphalt8.exe"+AD7F67: 33 C3                       -  xor eax,ebx
+}
+</AssemblerScript>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>6</ID>
+      <Description>"Nitro boost hack"</Description>
+      <LastState/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>[ENABLE]
+//code from here to '[DISABLE]' will be used to enable the cheat
+Asphalt8.exe+168DCC:
+jle Asphalt8.exe+168DD2
+
+[DISABLE]
+//code from here till the end of the code will be used to disable the cheat
+Asphalt8.exe+168DCC:
+jg Asphalt8.exe+168DD2
+
+</AssemblerScript>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>7</ID>
+      <Description>"Free MOD"</Description>
+      <LastState/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>[ENABLE]
+//code from here to '[DISABLE]' will be used to enable the cheat
+Asphalt8.exe+514FE6:
+mov ecx,[ecx+58]
+
+Asphalt8.exe+9B9568:
+jne Asphalt8.exe+9B969E
+
+Asphalt8.exe+C4B13:
+jne Asphalt8.exe+C4B33
+
+Asphalt8.exe+C4B24:
+nop
+nop
+ 
+[DISABLE]
+//code from here till the end of the code will be used to disable the cheat
+Asphalt8.exe+514FE6:
+mov ecx,[ecx+54]
+
+Asphalt8.exe+9B9568:
+je Asphalt8.exe+9B969E
+
+Asphalt8.exe+C4B13:
+je Asphalt8.exe+C4B33
+
+Asphalt8.exe+C4B24:
+jna Asphalt8.exe+C4B33
+
+
+
+
+</AssemblerScript>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>8</ID>
+      <Description>"Hack credit"</Description>
+      <LastState/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>{ Game   : Asphalt8.exe
+  Version: 
+  Date   : 2017-12-16
+  Author : aabbc
+
+  This script hacks credit
+}
+
+define(address,"Asphalt8.exe"+5DABC0)
+define(bytes,8D 86 A4 02 00 00 33 D7 33 D0)
+
+[ENABLE]
+
+assert(address,bytes)
+alloc(newmem,$1000)
+
+label(code)
+label(return)
+
+newmem:
+
+code:
+lea eax,[esi+000002A4]
+push ebx
+mov ebx,000F4240 { 8,000,000 }
+rol ebx,cl
+xor ebx,edi
+xor ebx,eax
+mov [esi+000002A4],ebx
+pop ebx
+xor edx,edi
+xor edx,eax
+ret
+
+
+address:
+push eax
+mov eax,code { [02A4868D] }
+call eax
+pop eax
+nop
+return:
+
+[DISABLE]
+
+address:
+  db bytes
+  // lea eax,[esi+000002A4]
+  // xor edx,edi
+  // xor edx,eax
+
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: "Asphalt8.exe"+5DABC0
+
+"Asphalt8.exe"+5DAB8D: 8D 44 24 78              -  lea eax,[esp+78]
+"Asphalt8.exe"+5DAB91: 64 A3 00 00 00 00        -  mov fs:[00000000],eax
+"Asphalt8.exe"+5DAB97: 8B D9                    -  mov ebx,ecx
+"Asphalt8.exe"+5DAB99: 83 BB 5C 01 00 00 00     -  cmp dword ptr [ebx+0000015C],00
+"Asphalt8.exe"+5DABA0: 0F 84 90 0A 00 00        -  je Asphalt8.exe+5DB636
+"Asphalt8.exe"+5DABA6: A1 20 DB 91 02           -  mov eax,[Asphalt8.exe+1A4DB20]
+"Asphalt8.exe"+5DABAB: 8B 3D BC 9E 91 02        -  mov edi,[Asphalt8.exe+1A49EBC]
+"Asphalt8.exe"+5DABB1: 8B 0D B8 9E 91 02        -  mov ecx,[Asphalt8.exe+1A49EB8]
+"Asphalt8.exe"+5DABB7: 8B 70 30                 -  mov esi,[eax+30]
+"Asphalt8.exe"+5DABBA: 8B 96 A4 02 00 00        -  mov edx,[esi+000002A4]
+// ---------- INJECTING HERE ----------
+"Asphalt8.exe"+5DABC0: 8D 86 A4 02 00 00        -  lea eax,[esi+000002A4]
+"Asphalt8.exe"+5DABC6: 33 D7                    -  xor edx,edi
+"Asphalt8.exe"+5DABC8: 33 D0                    -  xor edx,eax
+// ---------- DONE INJECTING  ----------
+"Asphalt8.exe"+5DABCA: 8D 86 B4 02 00 00        -  lea eax,[esi+000002B4]
+"Asphalt8.exe"+5DABD0: D3 CA                    -  ror edx,cl
+"Asphalt8.exe"+5DABD2: 89 54 24 48              -  mov [esp+48],edx
+"Asphalt8.exe"+5DABD6: 8B 10                    -  mov edx,[eax]
+"Asphalt8.exe"+5DABD8: 33 D7                    -  xor edx,edi
+"Asphalt8.exe"+5DABDA: 33 D0                    -  xor edx,eax
+"Asphalt8.exe"+5DABDC: 8D 86 EC 00 00 00        -  lea eax,[esi+000000EC]
+"Asphalt8.exe"+5DABE2: D3 CA                    -  ror edx,cl
+}
+</AssemblerScript>
+    </CheatEntry>
+  </CheatEntries>
+  <UserdefinedSymbols/>
+</CheatTable>

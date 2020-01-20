@@ -12,8 +12,8 @@ struct Cir{
 bool incir(Cir a,Point b){return dist(a.o,b)<=a.r;}
 Cir cocir(Point x,Point y,Point z){
 	double a=x.x-y.x,b=x.y-y.y,c=x.x-z.x,d=x.y-z.y,
-	e=((x.x*x.x-y.x*y.x)-(y.y*y.y-x.y*x.y))/2,f=((x.x*x.x-z.x*z.x)-(z.y*z.y-x.y*x.y))/2;
-	Point o=Point{(d*e-b*f)/(b*c-a*d),(a*f-c*e)/(b*c-a*d)};
+	e=-((x.x*x.x-y.x*y.x)-(y.y*y.y-x.y*x.y))/2,f=-((x.x*x.x-z.x*z.x)-(z.y*z.y-x.y*x.y))/2;
+	Point o=Point{(f*b-e*d)/(a*d-b*c),(f*a-e*c)/(b*c-d*a)};
 	return Cir{o,dist(x,o)};
 }
 Cir welzl(int s1,int s2){
