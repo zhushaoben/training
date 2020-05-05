@@ -22,7 +22,6 @@ void P(int x,int s){
 }
 int work(){
 	int a,b;scanf("%d%d",&a,&b);
-//	s(i)==s(2*i)+9*x;
 //	s(i)=(s(2*i)+9*x)/2
 //	s(i)=(a*s(i)/b+9*x)/2;
 //	(2b-a)s(i)=9bx
