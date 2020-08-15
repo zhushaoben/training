@@ -3,43 +3,62 @@ using namespace std;
 #define maxn 505
 struct Edge{
 	int next,to;
-}edge[maxn*50];
-int n,m,fi[maxn],num[maxn],G[maxn],S[maxn],se,ans;
+}edge[maxn*maxn*2];
+int n,m,fi[maxn],se,match[maxn],f[maxn],pre[maxn],tim[maxn],vis[maxn],st;
 inline void add_edge(int u,int v){edge[++se].next=fi[u],edge[se].to=v,fi[u]=se;}
-bool g[maxn],g1[maxn];
-int now,mi;
-inline int si(int x){
-	int ans=0;while(x&1)x>>=1,ans++;
-	return ans;
+inline void add(int u,int v){add_edge(u,v),add_edge(v,u);}
+int find(int x){return f[x]==x?x:f[x]=find(f[x]);}
+//查找lca 
+int lca(int x,int y){
+	for(++st;;swap(x,y))if(x){
+		x=find(x);
+		if(tim[x]==st)return x;
+		else tim[x]=st,x=pre[match[x]];
+	}
 }
-void dfs(int d,int G1){
-	if(now>=ans)return;
-	if(d==mi+1){ans=min(ans,now);return;}
-	if((G1&(1<<d))){dfs(d+1,G1);return;}
-	now++,dfs(d+1,G1|(1<<d)),now--;
-	if(num[d]>=ans)return;
-	for(int i=fi[d];i;i=edge[i].next){
-		int v=edge[i].to;
-		g1[v]=g[v]^1,g[v]=1;
-		if(g1[v])now++;
+int que[maxn],s,t;
+void shrink(int u,int v,int l){//奇环缩点 
+	while(find(u)!=l){
+		pre[u]=v;v=match[u];
+		if(vis[v]==2)vis[v]=1,que[t++]=v;
+		if(find(u)==u)f[u]=l;
+		if(find(v)==v)f[v]=l;
+		u=pre[v];
 	}
-	int w=si(S[d]^(S[d]&G1));
-	now+=w,dfs(d+1,G1|G[d]),now-=w;
-	for(int i=fi[d];i;i=edge[i].next){
-		int v=edge[i].to;
-		g[v]^=g1[v];if(g1[v])now--;
+}
+//寻找增广路 
+bool aug(int S){
+	for(int i=1;i<=n;i++)vis[i]=pre[i]=0,f[i]=i;
+	s=t=0;que[t++]=S,vis[S]=1;
+	while(s<t){
+		int u=que[s++];
+		for(int i=fi[u];i;i=edge[i].next){
+			int v=edge[i].to;
+			if(vis[v]==2||find(u)==find(v))continue;//如果在已处理奇环上或者是B类点 
+			if(!vis[v]){//未访问过 
+				vis[v]=2;pre[v]=u;
+				if(!match[v]){//找到增广路 
+					for(int x=v,la;x;x=la)
+						la=match[pre[x]],match[x]=pre[x],match[pre[x]]=x;
+					return 1;
+				}
+				vis[match[v]]=1,que[t++]=match[v];//将v的原匹配点作为A类点 
+			}
+			else{//找到奇环 
+				int l=lca(u,v);
+				shrink(u,v,l),shrink(v,u,l);
+			}
+		}
 	}
+	return 0;
 }
 void work(){
-	int u,v;ans=mi=min(30,n);se=now=0;
-	memset(fi,0,sizeof(fi)),memset(G,0,sizeof(G)),memset(num,0,sizeof(num)),memset(S,0,sizeof(S));
-	for(int i=0;i<m;i++){
-		scanf("%d%d",&u,&v);
-		if(u>v)swap(u,v);num[u]++;
-		if(v>30)add_edge(u,v);
-		else num[v]++,G[u]|=(1<<v),G[v]|=(1<<u),S[u]|=(1<<v);
-	}
-	dfs(1,0);
+	int u,v,ans=0;se=0;
+	memset(fi,0,sizeof(int)*(n+5)),memset(match,0,sizeof(int)*(n+5));
+	for(int i=0;i<m;i++)
+		scanf("%d%d",&u,&v),add(u,v);
+	for(int i=1;i<=n;i++)
+		if(!match[i])ans+=aug(i);
 	printf("%d\n",ans);
 }
 int main(){

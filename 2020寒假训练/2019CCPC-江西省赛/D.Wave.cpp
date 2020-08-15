@@ -13,6 +13,6 @@ int main(){
 	int ans=0;
 	for(int i=1;i<=c;i++)for(int j=1;j<=c;j++)ans=max(ans,dp[i][j]);
 	if(ans==1)ans=0;
-	printf("%d",ans);
+	printf("%d\n",ans);
 	return 0;
 }

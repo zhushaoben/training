@@ -1,73 +1,29 @@
 #include<bits/stdc++.h>
 using namespace std;
-#define maxn 2005
-#define N 10000
-#define LL long long
-int n,a[maxn],num[maxn*5];
-int c[10005];
-int lowbit(int x){
-    return x&(-x);
-}
-void add(int x,int num){
-    while(x<=N){
-        c[x]+=num;
-        x+=lowbit(x);
-    }
-}
-int sum(int x){
-    int ans=0;
-    while(x){
-        ans+=c[x];
-        x-=lowbit(x);
-    }
-    return ans;
-}
+const int N=2e3+5,S=1e4;
+typedef long long LL;
+int n,a[N],num[N*5];
+vector<int>v[N*5];
 int gcd(int a,int b){return b?gcd(b,a%b):a;}
 void work(){
-	LL ans=0;memset(num,0,sizeof(num));
+	for(int i=1;i<=S;i++)v[i].clear(),num[i]=0;
 	for(int i=0;i<n;i++)scanf("%d",a+i),num[a[i]]++;
-	sort(a,a+n);
-	for(int i=1;i<=N;i++)if(num[i]>=2)add(N-i+1,1);
+	sort(a,a+n);n=unique(a,a+n)-a;
 	for(int i=0;i<n;i++){
-		if(i&&a[i]==a[i-1])continue;
+		if(num[a[i]]<2)continue;
+		for(int j=1;j<=S;j++)
+			if(gcd(j,a[i])==1)v[j].push_back(a[i]);
+	}
+	LL ans=0;
+	for(int i=0;i<n;i++){
 		for(int j=i+1;j<n;j++){
-			if(a[j]==a[j-1]||gcd(a[i],a[j])!=1)continue;
-			if(num[a[i]]==2)add(N-a[i]+1,-1);
-			if(num[a[j]]==2)add(N-a[j]+1,-1);
-			ans+=sum(max(1,N-(a[j]-a[i])/2+1));
-			if(num[a[i]]==2)add(N-a[i]+1,1);
-			if(num[a[j]]==2)add(N-a[j]+1,1);
-		}
-	}
-	memset(c,0,sizeof(c));
-	for(int i=0;i<n;i++){
-		if(i&&a[i]==a[i-1])continue;
-		for(int j=0;j<n;j++){
-			if((j&&a[j]==a[j-1])||a[j]<=a[i]||gcd(a[i],a[j])==1)continue;
-			add(a[j],1);
-		}
-		for(int j=0;j<n;j++){
-			if((j&&a[j]==a[j-1])||num[a[j]]<2||gcd(a[i],a[j])!=1)continue;
-			ans+=sum(min(N,a[j]*2)+a[i]);
-		}
-		for(int j=0;j<n;j++){
-			if((j&&a[j]==a[j-1])||a[j]<=a[i]||gcd(a[i],a[j])==1)continue;
-			add(a[j],-1);
-		}
-	}
-	for(int i=0;i<n;i++){
-		if(i&&a[i]==a[i-1])continue;
-		for(int j=0;j<n;j++){
-			if((j&&a[j]==a[j-1])||a[j]>=a[i]||gcd(a[i],a[j])==1)continue;
-			add(a[j],1);
-		}
-		for(int j=0;j<n;j++){
-			if((j&&a[j]==a[j-1])||num[a[j]]<2||gcd(a[i],a[j])!=1)continue;
-			ans+=sum(min(N,a[j]*2)+a[i]);
-		}
-		for(int j=0;j<n;j++){
-			if((j&&a[j]==a[j-1])||a[j]>=a[i]||gcd(a[i],a[j])==1)continue;
-			add(a[j],-1);
+			int w=(a[j]-a[i])/2+1,d=gcd(a[j],a[i]),
+			x=lower_bound(v[d].begin(),v[d].end(),w)-v[d].begin();
+			ans+=v[d].size()-x;
+			if(d==1){
+				if(num[a[i]]==2&&a[i]>=w)ans--;
+				if(num[a[j]]==2&&a[j]>=w)ans--;
+			}
 		}
 	}
 	printf("%lld\n",ans);
