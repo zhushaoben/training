@@ -1,44 +1,43 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
-int euclid_gcd(int x,int y)
-{
-    while(y)
-    {
-        int t=x%y; x=y; y=t;
-    }
-    return x;
+const int N=5e3+5;
+int n,m,k;
+struct Q{
+	int q[N],id[N],s,t;
+	void init(){s=t=0;}
+	void insert(int x,int i){
+		while(s<t&&i-id[s]>=k)s++;
+		while(s<t&&x>q[t-1])t--;
+		q[t]=x,id[t]=i;t++;
+	}
+	int top(){return q[s];}
+}q;
+int gcd[N][N],f[N][N];
+void get_gcd(int n,int m){
+	for(int i=1;i<=n;i++)
+		for(int j=1;j<=m;j++)
+			if(!gcd[i][j])
+			for(int k=min(n/i,m/j),i1=k*i,j1=k*j;k;k--,i1-=i,j1-=j)gcd[i1][j1]=k;
 }
-int tmd=-1;
- 
-int n,m,k,q[5005][5005],head[5005],tail[5005],pos[5005][5005],f[5005];
-int q2[5005],h2,t2,p2[5005];
- 
-int main()
-{
+int main(){
     scanf("%d%d%d",&n,&m,&k);
-    for(int i=1; i<=n; i++) head[i]=1,tail[i]=0;
-     
+    get_gcd(n,m);
     long long ans=0;
-    for(int i=1; i<=m; i++) {
-        for(int j=1; j<=n; j++) {
-            int x=i*j/euclid_gcd(i, j);
-            while(pos[j][head[j]] < i-k+1 && head[j]<=tail[j]) head[j]++;
-            while(x>=q[j][tail[j]] && head[j]<=tail[j]) tail[j]--;
-            pos[j][++tail[j]]=i;
-            q[j][tail[j]]=x;
-            f[j]=q[j][head[j]];
-        }
-        if(i<k) continue;
-        h2=1,t2=0;
-        for(int j=1; j<=n; j++) {
-            int x=f[j];
-            while(p2[h2] < j-k+1 && h2<=t2) h2++;
-            while(x>=q2[t2] && h2<=t2) t2--;
-            p2[++t2]=j;
-            q2[t2]=x;
-            if(j>=k) ans+=q2[h2];
-        }
-    }
-    printf("%lld\n",ans);
+    /*
+    for(int j=1;j<=m;j++){
+    	q.init();
+    	for(int i=1;i<=n;i++)q.insert(i*j/gcd[i][j],i),f[i][j]=q.top();
+	}
+    for(int i=k;i<=n;i++){
+    	q.init();
+    	for(int j=1;j<=m;j++){
+    		q.insert(f[i][j],j);
+    		if(j>=k)ans+=q.top();
+		}
+	}
+	*/
+	for(int i=1;i<=n;i++)for(int j=1;j<=m;j++)f[i][j]=(k==1?i*j/gcd[i][j]:max(max(f[i-1][j],f[i][j-1]),i*j/gcd[i][j]));
+	for(int i=k;i<=n;i++)for(int j=k;j<=m;j++)ans+=f[i][j];
+	printf("%lld",ans);
     return 0;
 }
