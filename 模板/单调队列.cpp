@@ -18,6 +18,18 @@ struct HumdrumQueue{
 		a[t]=x,id[t++]=i,t%=maxk;//因为队列中元素不大于maxk，所以使用循环队列 
 	}
 }q;
+
+const int N=1e5+5;
+struct Q{
+	int q[N],id[N],s,t,k;
+	void init(){s=t=0;}
+	void insert(int x,int i){
+		while(s<t&&i-id[s]>=k)s++;
+		while(s<t&&x>q[t-1])t--;
+		q[t]=x,id[t]=i;t++;
+	}
+	int top(){return q[s];}
+}q;
 int main(){
 	return 0;
 } 
