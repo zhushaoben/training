@@ -1,3 +1,26 @@
+#define PACKAGE 1
+
+#if PACKAGE
+#include<bits/stdc++.h>
+using namespace std;
+const int N=1e6+5;
+struct Trie{
+	int tot,fa[N],tr[N][26];
+	void insert(char s[]){
+		int p=1;
+		for(int i=0;s[i];i++){
+			int x=s[i]-'a';
+			if(!tr[p][x])tr[p][x]=++tot,fa[tot]=p;
+			p=tr[p][x];
+		}
+	}
+};
+int main(){
+	return 0;
+}
+#endif
+
+#if !PACKAGE
 #include<cstdio>
 #include<cstring>
 using namespace std;
@@ -34,3 +57,4 @@ void trie_free(){//ø’º‰ Õ∑≈
 int main(){
 	return 0;
 }
+#endif
